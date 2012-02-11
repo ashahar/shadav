@@ -1,0 +1,16 @@
+Basic use cases
+===============
+
+To try this out you need curl install.
+
+cat propfind1.xml | curl -v -H 'depth: 1' -X PROPFIND -d @-  http://localhost:8080/webdav/
+
+cat proppatch.xml | curl -v  -X PROPPATCH -d @-  http://ubuntu:8080/webdav/
+
+cat propfind1.xml | curl -v -H 'depth: 0' -X PROPFIND -d @-  http://localhost:8080/webdav/
+
+cat lock.xml | curl -v -X LOCK -d @-  http://ubuntu:8080/webdav/
+
+cat propfind2.xml | curl -v  -H 'depth: 1' -X PROPFIND -d @-  http://ubuntu:8080/webdav/
+
+

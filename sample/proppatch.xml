@@ -1,0 +1,17 @@
+<D:propertyupdate xmlns:D="DAV:">
+ <D:set>
+  <D:prop xmlns:R="http://www.foo.bar/boxschema/">
+   <R:bigbox>
+       <R:BoxType>Box type A</R:BoxType>
+       <R:BoxWidth>100</R:BoxWidth>
+   </R:bigbox>
+   <R:author>Hadrian</R:author>
+  </D:prop>
+ </D:set> 
+ <D:remove>
+  <D:prop xmlns:Z="http://www.w3.com/standards/z39.50/">
+      <Z:Copyright-Owner/>
+  </D:prop>
+ </D:remove>
+</D:propertyupdate>
+

@@ -1,0 +1,13 @@
+<D:propfind xmlns:D="DAV:">
+  <D:prop>
+    <D:getcontenttype/>
+    <D:getlastmodified/>
+    <D:getcontentlength/>
+    <D:resourcetype/>
+    <D:supportedlock/>
+    <D:getetag/>
+    <R:author xmlns:R="http://www.foo.bar/boxschema/"/>
+  </D:prop>
+</D:propfind>
+
+
