@@ -249,24 +249,19 @@ class ObjectHandler(RootHandler):
         """
         locks  = self.application.lockdb.all_locks(obj.uri)
         if locks == []:
-            return   
-                                 
+            return              
         if self._if_header_match( ifh_result, locks ):
             return    
-
         raise web.HTTPError(423)
                 
     def _has_dependent_lock(self, obj, ifh_result):
         """ verify that a collection object has no dependent locks
         """
         locks  = self.application.lockdb.dependent_lock(obj.uri)
-        tokens = [ lock.token for lock in locks ]
-        if tokens == []:
-            return
-
+        if locks == []:
+            return   
         if self._if_header_match( ifh_result, locks ):
             return    
-
         raise web.HTTPError(423)
   
     def options(self, collection, filename=''):
