@@ -30,8 +30,8 @@ import urllib
 from ifheader import if_header_evaluate
 from index import collection_index
 from dav.davelement import *
-from dav.properties import DbAdapter
-from dav.lock import Lockdb, LockDiscovery, parse_timeout
+from dav.properties import DbAdapter, PropFindParser, PropPatchParser
+from dav.lock import Lockdb, LockDiscovery, LockParser, parse_timeout
 
 
 """RFC4918 implemeantation  
@@ -517,7 +517,12 @@ class ObjectHandler(RootHandler):
         if dav_object.is_collection() and depth!=0 and depth!=1:
             raise web.HTTPError(400) 
         
-        response = dav_object.propfind( self.request, depth )
+        try:
+            parser = PropFindParser(self.request.body)    
+        except:
+            raise web.HTTPError(400) 
+
+        response = dav_object.propfind( parser, depth )
         if isinstance (response, int):
             raise web.HTTPError(response)
 
@@ -547,7 +552,13 @@ class ObjectHandler(RootHandler):
             return                                 
 
         self._is_locked( dav_object, ife )
-        response = dav_object.proppatch( self.request ) 
+
+        try:
+            parser = PropPatchParser(self.request.body)    
+        except:
+            raise web.HTTPError(400) 
+       
+        response = dav_object.proppatch( parser ) 
         if isinstance (response, int):
             raise web.HTTPError(response)
 
@@ -605,7 +616,6 @@ class ObjectHandler(RootHandler):
 
         if self.request.body == '':
             # Try to refresh locked object
-
             locks = self.application.lockdb.all_locks( dav_object.uri )
             if locks==[]:
                 raise web.HTTPError(400)     
@@ -627,8 +637,12 @@ class ObjectHandler(RootHandler):
 
         else:
             # Try to lock object
+            try:
+                parser = LockParser(self.request.body)
+            except:
+                raise web.HTTPError(400) 
 
-            rc = dav_object.lock(self.request, timeout, depth)
+            rc = dav_object.lock(parser, timeout, depth)
             if isinstance (rc, int):
                 raise web.HTTPError(rc)
         

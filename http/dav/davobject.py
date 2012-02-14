@@ -19,8 +19,8 @@ from email.utils import formatdate
 from datetime import datetime
 
 from davelement import *
-from properties import PropFindParser, PropPatchParser, Properties, DbAdapter
-from lock import LockDiscovery, EXCLUSIVE, SHARED, LockParser
+from properties import Properties, DbAdapter
+from lock import LockDiscovery, EXCLUSIVE, SHARED
 
 class DavObject(object):
     """ 
@@ -129,14 +129,9 @@ class DavObject(object):
     def properties(self):
         return dict (self._properties)
 
-    def propfind(self, request, depth=0):
+    def propfind(self, parser, depth=0):
         """ Propfind Dav method
         """
-        try:
-            parser = PropFindParser(request.body)    
-        except:
-            return 400
-
         response = []
         props    = self.get_properties()
         prop_e   = props.propfind(parser.prop_list, parser.propname)           
@@ -152,32 +147,21 @@ class DavObject(object):
                 
         return ( 207, response )
 
-    def proppatch(self, request):       
+    def proppatch(self, parser):       
         """ Proppatch Dav method
-        
         """
-        try:
-            parser = PropPatchParser(request.body)    
-        except:
-            return 400
-
         props    = self.get_properties()
         prop_e   = props.proppatch( parser.property_set, parser.property_remove)
         href_e   = HrefElement(self.uri)
         response = ResponseElement(href_e, *prop_e)
         return ( 207, response  )
               
-    def lock(self, request, timeout=None, depth=None):
+    def lock(self, parser, timeout=None, depth=None):
         """ Lock of a resource 
             If resource is a collection then the lock apply
             to all childrens when depth infinity or the resource
             itself when depth is zero.
-        """
-        try:
-            parser = LockParser(request.body)
-        except:
-            return 400
-              
+        """             
         exclusive = self.application.lockdb.exclusive_lock(self.uri)
         if exclusive!=[]:
             return 423
