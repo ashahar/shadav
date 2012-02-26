@@ -350,7 +350,6 @@ class ObjectHandler(RootHandler):
             return                                 
 
         self.set_header("Last-Modified", dav_object.lastmodifieddate())
-        self.set_header("Content-Type", 'text/html')
         self.set_header("Etag", dav_object.etag)
         
         inm = self.request.headers.get("If-None-Match")
@@ -358,8 +357,10 @@ class ObjectHandler(RootHandler):
             self.set_status(304)
         elif with_body:
             if dav_object.is_collection():
+                self.set_header("Content-Type", 'text/html')
                 self.write( collection_index( self.request, dav_object ) )
             else:
+                self.set_header("Content-Type", dav_object.contenttype())
                 try:
                     object_file = open(dav_object.filename, "rb")
                     try:
