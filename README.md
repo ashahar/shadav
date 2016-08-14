@@ -1,15 +1,8 @@
-Webdav server based on Tornado framework
-========================================
-
 This is an implementation of a webdav server based
 entirely on python libraries.
 
 It is tested to be working against windows 7 client nautilus cadaver and
 passes the litmus test.
-
-
-INSTALL
--------
 
 You will need the tornado libraries so install from your repository.
 
@@ -31,10 +24,6 @@ This will be the base Dav server directory.
 Try to connect to:
 http://localhost:8080/webdav/ from any client. 
 You can also open it with your web browser.
-
-
-AUTHENTICATION
---------------
 
 By default authentication is disabled. 
 
