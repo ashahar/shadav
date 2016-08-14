@@ -23,7 +23,7 @@ import tornado.httpserver
 import tornado.ioloop
 import tornado.options
 from tornado.options import define, options
-from tornado import database
+from torndb import Connection
 
 from handler import BasicHandler, RootHandler, ObjectHandler
 from auth import DigestAuth, BasicAuth, DbSqlAuth, DbFileAuth
@@ -73,7 +73,7 @@ def run_server(conf_root=''):
         tornado.options.parse_config_file( conf_file )
     tornado.options.parse_command_line()
 
-    db = database.Connection(options.mysql_host, 
+    db = Connection(options.mysql_host, 
         options.mysql_name, 
         options.mysql_user, 
         options.mysql_passwd)

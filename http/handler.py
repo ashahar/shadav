@@ -14,8 +14,6 @@
 # under the License.
 
 from tornado import web
-from tornado import database
-
 import os
 import re
 import functools
